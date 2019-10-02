@@ -20,7 +20,7 @@ class CustomTitle extends StatelessWidget {
         children: <Widget>[
           Icon(CupertinoIcons.back),
           Text('Our products',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
-          Icon(CupertinoIcons.bookmark),
+          Icon(Icons.bookmark_border),
         ],
       ),
       decoration: BoxDecoration(

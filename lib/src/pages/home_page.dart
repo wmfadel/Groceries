@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groceries/src/widgets/cart_details.dart';
+import 'package:groceries/src/widgets/cart_tiles.dart';
 import 'package:groceries/src/widgets/products_grid.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,6 +12,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double screenWidth, screenHeight;
+  bool shouldHide = false;
+  ScrollController _controller = ScrollController();
+
+  scrollListeners() {
+    _controller.addListener(() {
+      if (_controller.position.pixels ==
+          _controller.position.maxScrollExtent && !shouldHide) {
+       setState(() {
+         shouldHide = true;
+         print('scrollng :$shouldHide!!');
+       });
+      }
+    });
+
+    _controller.addListener(() {
+      if (_controller.position.pixels ==
+          _controller.position.minScrollExtent && shouldHide) {
+       setState(() {
+         shouldHide = false;
+         print('scrollng :$shouldHide!!');
+       });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +43,19 @@ class _HomePageState extends State<HomePage> {
     screenWidth = size.width;
     screenHeight = size.height;
 
+    scrollListeners();
+
     return Scaffold(
       backgroundColor: Color(0xff030303),
       body: Container(
         width: screenWidth,
         height: screenHeight,
         child: ListView(
+          controller: _controller,
           children: <Widget>[
             ProductsGrid(),
-            SizedBox(height: 20),
-            CartDetails(),
+            SizedBox(height: 10),
+            shouldHide ? CartDetails() : CartTiles(),
           ],
         ),
       ),
